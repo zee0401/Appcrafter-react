@@ -4,10 +4,15 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { ResourceFormValues } from "@/schema/resourceSchema";
 import { ResourceType } from "@/types/resourcesTypes";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { CardView } from "@/components/card-view/CardView";
 
 const Home = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [resources, setResources] = useState<ResourceType[]>([]);
+
+    const [isChecked, setIsChecked] = useState(false);
 
     const handleAddResource = (newResource: ResourceFormValues) => {
         setResources([
@@ -20,6 +25,16 @@ const Home = () => {
     return (
         <div className="flex flex-col items-center justify-center">
             <div className="my-6 font-bold text-xl">Resource List</div>
+            <div className="flex items-center gap-2">
+                <Switch
+                    id="toggle-mode"
+                    checked={isChecked}
+                    onCheckedChange={setIsChecked}
+                />
+                <Label htmlFor="toggle-mode">
+                    {isChecked ? "Table-View" : "Card-View"}
+                </Label>
+            </div>
 
             <div className="flex justify-between md:w-196 xl:w-196 w-full p-4">
                 <Button
@@ -29,7 +44,8 @@ const Home = () => {
                     Add Resource
                 </Button>
             </div>
-            <ResourceTable />
+            {isChecked ? <ResourceTable /> : <CardView />}
+
             <ResourceFormModal
                 open={isModalOpen}
                 onOpenChange={setIsModalOpen}
