@@ -1,3 +1,4 @@
+import ResourceTable from "@/components/table/ResourceTable";
 import { Button } from "@/components/ui/button";
 
 const Home = () => {
@@ -10,6 +11,7 @@ const Home = () => {
                     Add Resource
                 </Button>
             </div>
+            <ResourceTable />
         </div>
     );
 };
