@@ -1,11 +1,14 @@
-import "./App.css";
+import Home from "./pages/Home";
 
 function App() {
     return (
         <>
-            <p className="text-red-500">
-                Click on the Vite and React logos to learn more
-            </p>
+            <div className="display-flex flex-col items-center justify-center  bg-black text-white ">
+                <div className="font-bold text-center text-5xl text-sky-500 pt-10">
+                    Appcrafter
+                </div>
+                <Home />
+            </div>
         </>
     );
 }
