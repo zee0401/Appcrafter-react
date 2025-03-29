@@ -1,5 +1,5 @@
 import ResourceFormModal from "@/components/form-modal/ResourceForm";
-import ResourceTable from "@/components/table/ResourceTable";
+import ResourceTable from "@/components/table-view/ResourceTable";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { ResourceFormValues } from "@/schema/resourceSchema";
