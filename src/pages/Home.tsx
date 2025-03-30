@@ -1,26 +1,49 @@
 import ResourceFormModal from "@/components/form-modal/ResourceForm";
 import ResourceTable from "@/components/table-view/ResourceTable";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import { ResourceFormValues } from "@/schema/resourceSchema";
 import { ResourceType } from "@/types/resourcesTypes";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { CardView } from "@/components/card-view/CardView";
+import { Skeleton } from "@/components/ui/skeleton";
+import { getAllResources } from "@/api/api";
 
 const Home = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [resources, setResources] = useState<ResourceType[]>([]);
 
-    const [isChecked, setIsChecked] = useState(false);
+    const [isChecked, setIsChecked] = useState(true);
+    const [loading, setLoading] = useState(false);
 
-    const handleAddResource = (newResource: ResourceFormValues) => {
-        setResources([
-            ...resources,
-            { ...newResource, id: crypto.randomUUID() },
-        ]);
+    const handleAddResource = async (newResource: ResourceFormValues) => {
+        try {
+            setLoading(true);
+            // await getAllResources();
+            setResources([...resources, newResource]);
+            setLoading(false);
+        } catch (e) {
+            console.log(e);
+        }
+
         setIsModalOpen(false);
     };
+
+    const fetchResources = async () => {
+        try {
+            setLoading(true);
+            const response = await getAllResources();
+            setResources(response);
+            setLoading(false);
+        } catch (e) {
+            console.log(e);
+        }
+    };
+
+    useEffect(() => {
+        fetchResources();
+    }, []);
 
     return (
         <div className="flex flex-col items-center justify-center">
@@ -44,7 +67,15 @@ const Home = () => {
                     Add Resource
                 </Button>
             </div>
-            {isChecked ? <ResourceTable /> : <CardView />}
+            {isChecked ? (
+                loading ? (
+                    <Skeleton />
+                ) : (
+                    <ResourceTable data={resources} />
+                )
+            ) : (
+                <CardView />
+            )}
 
             <ResourceFormModal
                 open={isModalOpen}

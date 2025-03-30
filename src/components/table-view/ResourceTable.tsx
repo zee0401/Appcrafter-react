@@ -8,53 +8,16 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { Button } from "../ui/button";
+import { ResourceType } from "@/types/resourcesTypes";
 
-const ResourceTable = () => {
-    const invoices = [
-        {
-            invoice: "INV001",
-            paymentStatus: "Paid",
-            totalAmount: "$250.00",
-            paymentMethod: "Credit Card",
-        },
-        {
-            invoice: "INV002",
-            paymentStatus: "Pending",
-            totalAmount: "$150.00",
-            paymentMethod: "PayPal",
-        },
-        {
-            invoice: "INV003",
-            paymentStatus: "Unpaid",
-            totalAmount: "$350.00",
-            paymentMethod: "Bank Transfer",
-        },
-        {
-            invoice: "INV004",
-            paymentStatus: "Paid",
-            totalAmount: "$450.00",
-            paymentMethod: "Credit Card",
-        },
-        {
-            invoice: "INV005",
-            paymentStatus: "Paid",
-            totalAmount: "$550.00",
-            paymentMethod: "PayPal",
-        },
-        {
-            invoice: "INV006",
-            paymentStatus: "Pending",
-            totalAmount: "$200.00",
-            paymentMethod: "Bank Transfer",
-        },
-        {
-            invoice: "INV007",
-            paymentStatus: "Unpaid",
-            totalAmount: "$300.00",
-            paymentMethod: "Credit Card",
-        },
-    ];
+interface ResourceTableProps {
+    data: ResourceType[];
+    onEdit: (resource: ResourceType) => void;
+    onDelete: (id: string) => void;
+}
 
+const ResourceTable = ({ data }: ResourceTableProps) => {
+    console.log(data);
     return (
         <div className="p-5 w-full md:w-196 xl:w-196">
             <Table className="rounded-2xl border-2 border-zinc-800 shadow-md">
@@ -69,35 +32,36 @@ const ResourceTable = () => {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {invoices.map((invoice, i) => (
-                        <TableRow
-                            className="hover:bg-zinc-800"
-                            key={invoice.invoice}
-                        >
-                            <TableCell className="font-medium">
-                                {i + 1}
-                            </TableCell>
-                            <TableCell className="font-medium">
-                                {invoice.invoice}
-                            </TableCell>
-                            <TableCell>{invoice.paymentStatus}</TableCell>
-                            <TableCell>{invoice.paymentMethod}</TableCell>
-                            <TableCell className="text-right">
-                                <Button
-                                    className="mr-2 hover:cursor-pointer"
-                                    variant={"secondary"}
-                                >
-                                    Edit
-                                </Button>
-                                <Button
-                                    className="hover:cursor-pointer"
-                                    variant={"destructive"}
-                                >
-                                    Delete
-                                </Button>
-                            </TableCell>
-                        </TableRow>
-                    ))}
+                    {data &&
+                        data?.map((resource, i) => (
+                            <TableRow
+                                className="hover:bg-zinc-800"
+                                key={resource?._id}
+                            >
+                                <TableCell className="font-medium">
+                                    {i + 1}
+                                </TableCell>
+                                <TableCell className="font-medium">
+                                    {resource.title}
+                                </TableCell>
+                                <TableCell>{resource.description}</TableCell>
+                                <TableCell>{resource.type}</TableCell>
+                                <TableCell className="text-right">
+                                    <Button
+                                        className="mr-2 hover:cursor-pointer"
+                                        variant={"secondary"}
+                                    >
+                                        Edit
+                                    </Button>
+                                    <Button
+                                        className="hover:cursor-pointer"
+                                        variant={"destructive"}
+                                    >
+                                        Delete
+                                    </Button>
+                                </TableCell>
+                            </TableRow>
+                        ))}
                 </TableBody>
             </Table>
         </div>
