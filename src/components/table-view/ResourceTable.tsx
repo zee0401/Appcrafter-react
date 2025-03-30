@@ -40,7 +40,7 @@ const ResourceTable = ({ data, onEdit, onDelete }: ResourceTableProps) => {
     };
 
     return (
-        <div className="p-5 w-full md:w-196 xl:w-196">
+        <div className="p-5 w-full md:w-280 xl:w-280">
             <Table className="rounded-2xl border-2 border-zinc-800 shadow-md">
                 <TableCaption>A list of your Resources.</TableCaption>
                 <TableHeader>
@@ -62,10 +62,13 @@ const ResourceTable = ({ data, onEdit, onDelete }: ResourceTableProps) => {
                                 <TableCell className="font-medium">
                                     {i + 1}
                                 </TableCell>
-                                <TableCell className="font-medium">
+                                <TableCell className="whitespace-pre-wrap max-w-[180px] break-words  font-medium">
                                     {resource.title}
                                 </TableCell>
-                                <TableCell>{resource.description}</TableCell>
+                                <TableCell className="whitespace-pre-wrap max-w-[300px] break-words text-gray-300">
+                                    {resource.description}
+                                </TableCell>
+
                                 <TableCell>{resource.type}</TableCell>
                                 <TableCell className="text-right">
                                     <Button

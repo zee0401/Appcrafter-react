@@ -107,7 +107,7 @@ const Home = () => {
                 </Label>
             </div>
 
-            <div className="flex justify-between md:w-196 xl:w-196 w-full p-4">
+            <div className="flex justify-between md:w-280 xl:w-280 w-full p-4">
                 <Button
                     className="mr-2 bg-sky-300 text-gray-800 hover:bg-sky-500 hover:cursor-pointer"
                     onClick={() => setIsModalOpen(true)}

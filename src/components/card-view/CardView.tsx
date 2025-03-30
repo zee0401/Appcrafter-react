@@ -31,21 +31,21 @@ export function CardView({ data, onEdit, onDelete }: ResourceCardProps) {
     };
 
     return (
-        <div className="p-5 grid gap-4 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3">
+        <div className="p-5 grid gap-4 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4">
             {data &&
                 data?.map((resource) => (
                     <div
                         key={resource._id}
-                        className="p-4 bg-white shadow-md rounded-lg border border-gray-200 transition-all duration-200 hover:shadow-lg"
+                        className="p-4 bg-gray-800 shadow-md rounded-lg border border-gray-600 transition-all duration-200 hover:shadow-lg"
                     >
-                        <h3 className="text-lg font-semibold mb-2 text-gray-900">
+                        <h3 className="text-lg font-semibold mb-2 text-gray-200">
                             {resource.title}
                         </h3>
 
-                        <p className="text-gray-700 mb-2">
+                        <p className="text-gray-400 mb-2">
                             {resource.description}
                         </p>
-                        <p className="text-sm text-gray-500 mb-4">
+                        <p className="text-sm text-gray-300 mb-4 underline">
                             {resource.type}
                         </p>
                         <div className="mt-4 flex justify-end gap-2 ">

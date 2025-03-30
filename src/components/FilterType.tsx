@@ -22,9 +22,7 @@ function FilterType({ setSelectedType }: FilterTypeProps) {
         <div className="flex items-center gap-2">
             <Select onValueChange={setSelectedType}>
                 <SelectTrigger className="w-[140px]">
-                    <div>
-                        <Filter />
-                    </div>
+                    <Filter />
                     <SelectValue placeholder="Select Type" />
                 </SelectTrigger>
                 <SelectContent>
