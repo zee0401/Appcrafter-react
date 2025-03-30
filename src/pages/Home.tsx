@@ -99,8 +99,14 @@ const Home = () => {
                         onDelete={handleDeleteResource}
                     />
                 )
+            ) : loading ? (
+                <TableSkeleton />
             ) : (
-                <CardView />
+                <CardView
+                    data={resources}
+                    onEdit={handleEditResource}
+                    onDelete={handleDeleteResource}
+                />
             )}
 
             <ResourceFormModal
