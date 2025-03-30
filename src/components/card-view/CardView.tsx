@@ -37,75 +37,34 @@ export function CardView({ data, onEdit, onDelete }: ResourceCardProps) {
         setIsModalOpen(false);
     };
 
-    // useEffect(() => {
-    //     fetchResources();
-    // }, []);
-
-    // const fetchResources = async () => {
-    //     try {
-    //         setLoading(true);
-    //         const response = await getAllResources();
-    //         setResources(response);
-    //         setLoading(false);
-    //     } catch (e) {
-    //         console.log(e);
-    //     }
-    // };
-
-    // const handleAddResource = async (newResource: ResourceType) => {
-    //     try {
-    //         setLoading(true);
-    //         await createResource(newResource);
-    //         fetchResources();
-    //     } catch (e) {
-    //         console.log(e);
-    //     }
-    //     setIsModalOpen(false);
-    // };
-
-    // const handleEditResource = async (updatedResource: ResourceType) => {
-    //     try {
-    //         await updateResource(updatedResource._id, updatedResource);
-    //         fetchResources();
-    //     } catch (error) {
-    //         console.error("Error updating resource:", error);
-    //     }
-    // };
-
-    // const handleDeleteResource = async (id: string) => {
-    //     try {
-    //         await deleteResource(id);
-    //         setResources(resources.filter((resource) => resource._id !== id));
-    //     } catch (error) {
-    //         console.error("Error deleting resource:", error);
-    //     }
-    // };
-
     return (
         <div className="p-5 grid gap-4 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3">
             {data &&
                 data?.map((resource) => (
                     <div
                         key={resource._id}
-                        className="p-4 bg-white shadow-md rounded-lg border border-gray-200"
+                        className="p-4 bg-white shadow-md rounded-lg border border-gray-200 transition-all duration-200 hover:shadow-lg"
                     >
-                        <h3 className="text-lg font-bold mb-2 text-black">
+                        <h3 className="text-lg font-semibold mb-2 text-gray-900">
                             {resource.title}
                         </h3>
-                        <p className="text-gray-600 mb-2">
+
+                        <p className="text-gray-700 mb-2">
                             {resource.description}
                         </p>
-                        <p className="text-gray-600 mb-2">{resource.type}</p>
-                        <div className="mt-4 flex justify-end gap-2">
+                        <p className="text-sm text-gray-500 mb-4">
+                            {resource.type}
+                        </p>
+                        <div className="mt-4 flex justify-end gap-2 ">
                             <Button
-                                className="hover:cursor-pointer"
+                                className="hover:bg-indigo-100 hover:text-indigo-600 text-indigo-600 border border-indigo-600 rounded-md py-2 px-4 transition-colors"
                                 variant="secondary"
                                 onClick={() => handleEditClick(resource)}
                             >
                                 Edit
                             </Button>
                             <Button
-                                className="hover:cursor-pointer"
+                                className="hover:bg-red-100 hover:text-red-600 text-white border border-red-600 rounded-md py-2 px-4 transition-colors"
                                 variant="destructive"
                                 onClick={() => onDelete(resource._id)}
                             >

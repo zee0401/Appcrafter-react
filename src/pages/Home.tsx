@@ -13,7 +13,10 @@ import {
     getAllResources,
     updateResource,
 } from "@/api/api";
+
+import FilterType from "@/components/FilterType";
 import TableSkeleton from "@/components/loading-skeleton/TableSkeleton";
+import CardViewSkeleton from "@/components/loading-skeleton/CardViewSkeleton";
 
 const Home = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -21,6 +24,11 @@ const Home = () => {
 
     const [isChecked, setIsChecked] = useState(true);
     const [loading, setLoading] = useState(false);
+    const [selectedType, setSelectedType] = useState<string>("");
+
+    const [filteredResources, setFilteredResources] = useState<ResourceType[]>(
+        []
+    );
 
     const handleAddResource = async (formValues: ResourceType) => {
         try {
@@ -67,6 +75,17 @@ const Home = () => {
         fetchResources();
     }, []);
 
+    useEffect(() => {
+        if (selectedType) {
+            const filtered = resources.filter(
+                (resource) => resource.type === selectedType
+            );
+            setFilteredResources(filtered);
+        } else {
+            setFilteredResources(resources);
+        }
+    }, [selectedType, resources]);
+
     return (
         <div className="flex flex-col items-center justify-center">
             <div className="my-6 font-bold text-xl">Resource List</div>
@@ -88,22 +107,23 @@ const Home = () => {
                 >
                     Add Resource
                 </Button>
+                <FilterType setSelectedType={setSelectedType} />
             </div>
             {isChecked ? (
                 loading ? (
                     <TableSkeleton />
                 ) : (
                     <ResourceTable
-                        data={resources}
+                        data={filteredResources}
                         onEdit={handleEditResource}
                         onDelete={handleDeleteResource}
                     />
                 )
             ) : loading ? (
-                <TableSkeleton />
+                <CardViewSkeleton />
             ) : (
                 <CardView
-                    data={resources}
+                    data={filteredResources}
                     onEdit={handleEditResource}
                     onDelete={handleDeleteResource}
                 />
