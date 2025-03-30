@@ -9,6 +9,7 @@ import { Switch } from "@/components/ui/switch";
 import { CardView } from "@/components/card-view/CardView";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getAllResources } from "@/api/api";
+import TableSkeleton from "@/components/loading-skeleton/TableSkeleton";
 
 const Home = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -69,7 +70,7 @@ const Home = () => {
             </div>
             {isChecked ? (
                 loading ? (
-                    <Skeleton />
+                    <TableSkeleton />
                 ) : (
                     <ResourceTable data={resources} />
                 )
