@@ -17,6 +17,7 @@ import {
 import FilterType from "@/components/FilterType";
 import TableSkeleton from "@/components/loading-skeleton/TableSkeleton";
 import CardViewSkeleton from "@/components/loading-skeleton/CardViewSkeleton";
+import { toast } from "sonner";
 
 const Home = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -35,9 +36,11 @@ const Home = () => {
             setLoading(true);
             await createResource(formValues);
             setResources([...resources, formValues]);
+            toast.success("Resource added successfully!");
             setLoading(false);
         } catch (e) {
             console.log(e);
+            toast.error("Error adding resource");
         }
         setIsModalOpen(false);
     };
@@ -45,8 +48,10 @@ const Home = () => {
     const handleEditResource = async (updatedResource: ResourceType) => {
         try {
             await updateResource(updatedResource._id, updatedResource);
+            toast.success("Resource updated successfully!");
             fetchResources();
         } catch (error) {
+            toast.error("Error updating resource");
             console.error("Error updating resource:", error);
         }
     };
@@ -55,8 +60,10 @@ const Home = () => {
         try {
             await deleteResource(id);
             setResources(resources.filter((res) => res._id !== id));
+            toast.success("Resource deleted successfully!");
         } catch (error) {
             console.error("Error deleting resource:", error);
+            toast.error("Error deleting resource");
         }
     };
 

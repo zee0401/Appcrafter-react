@@ -1,4 +1,5 @@
 import Home from "./pages/Home";
+import { Toaster } from "sonner";
 
 function App() {
     return (
@@ -8,6 +9,7 @@ function App() {
                     Appcrafter
                 </div>
                 <Home />
+                <Toaster position="bottom-right" />
             </div>
         </>
     );
