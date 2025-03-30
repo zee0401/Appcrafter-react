@@ -7,7 +7,12 @@ import { ResourceType } from "@/types/resourcesTypes";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { CardView } from "@/components/card-view/CardView";
-import { createResource, getAllResources } from "@/api/api";
+import {
+    createResource,
+    deleteResource,
+    getAllResources,
+    updateResource,
+} from "@/api/api";
 import TableSkeleton from "@/components/loading-skeleton/TableSkeleton";
 
 const Home = () => {
@@ -27,6 +32,30 @@ const Home = () => {
             console.log(e);
         }
         setIsModalOpen(false);
+    };
+
+    const handleEditResource = async (id: string, formValues: ResourceType) => {
+        try {
+            setLoading(true);
+            await updateResource(id, formValues);
+            setResources(
+                resources.map((resource) =>
+                    resource._id === id ? formValues : resource
+                )
+            );
+            setLoading(false);
+        } catch (e) {
+            console.log(e);
+        }
+    };
+
+    const handleDeleteResource = async (id: string) => {
+        try {
+            await deleteResource(id);
+            setResources(resources.filter((res) => res._id !== id));
+        } catch (error) {
+            console.error("Error deleting resource:", error);
+        }
     };
 
     const fetchResources = async () => {
@@ -70,7 +99,11 @@ const Home = () => {
                 loading ? (
                     <TableSkeleton />
                 ) : (
-                    <ResourceTable data={resources} />
+                    <ResourceTable
+                        data={resources}
+                        // onEdit={handleEditResource}
+                        onDelete={handleDeleteResource}
+                    />
                 )
             ) : (
                 <CardView />

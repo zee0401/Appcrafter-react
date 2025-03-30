@@ -13,11 +13,10 @@ import { ResourceType } from "@/types/resourcesTypes";
 interface ResourceTableProps {
     data: ResourceType[];
     onEdit: (resource: ResourceType) => void;
-    onDelete: (id: string) => void;
+    onDelete: (id: ResourceType["_id"]) => void;
 }
 
-const ResourceTable = ({ data }: ResourceTableProps) => {
-    console.log(data);
+const ResourceTable = ({ data, onEdit, onDelete }: ResourceTableProps) => {
     return (
         <div className="p-5 w-full md:w-196 xl:w-196">
             <Table className="rounded-2xl border-2 border-zinc-800 shadow-md">
@@ -56,6 +55,7 @@ const ResourceTable = ({ data }: ResourceTableProps) => {
                                     <Button
                                         className="hover:cursor-pointer"
                                         variant={"destructive"}
+                                        onClick={() => onDelete(resource._id)}
                                     >
                                         Delete
                                     </Button>
