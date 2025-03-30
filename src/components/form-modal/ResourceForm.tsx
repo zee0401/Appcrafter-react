@@ -63,8 +63,13 @@ export default function ResourceFormModal({
         }
     }, [open, defaultValues, reset]);
 
-    const handleFormSubmit = (data: ResourceType) => {
-        onSubmit(data);
+    const handleFormSubmit = (data: ResourceFormValues) => {
+        const resource: ResourceType = {
+            ...data,
+            _id: defaultValues?._id || "",
+        };
+
+        onSubmit(resource);
         reset();
         onOpenChange(false);
     };

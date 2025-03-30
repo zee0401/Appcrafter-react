@@ -1,14 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "../ui/button";
 import ResourceFormModal from "../form-modal/ResourceForm";
 import { ResourceFormValues, ResourceType } from "@/types/resourcesType";
-import {
-    createResource,
-    deleteResource,
-    getAllResources,
-    updateResource,
-} from "@/api/api";
-import TableSkeleton from "@/components/loading-skeleton/TableSkeleton";
 
 interface ResourceCardProps {
     data: ResourceType[];
