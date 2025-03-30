@@ -1,14 +1,13 @@
 import ResourceFormModal from "@/components/form-modal/ResourceForm";
 import ResourceTable from "@/components/table-view/ResourceTable";
 import { Button } from "@/components/ui/button";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ResourceFormValues } from "@/schema/resourceSchema";
 import { ResourceType } from "@/types/resourcesTypes";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { CardView } from "@/components/card-view/CardView";
-import { Skeleton } from "@/components/ui/skeleton";
-import { getAllResources } from "@/api/api";
+import { createResource, getAllResources } from "@/api/api";
 import TableSkeleton from "@/components/loading-skeleton/TableSkeleton";
 
 const Home = () => {
@@ -18,16 +17,15 @@ const Home = () => {
     const [isChecked, setIsChecked] = useState(true);
     const [loading, setLoading] = useState(false);
 
-    const handleAddResource = async (newResource: ResourceFormValues) => {
+    const handleAddResource = async (formValues: ResourceType) => {
         try {
             setLoading(true);
-            // await getAllResources();
-            setResources([...resources, newResource]);
+            await createResource(formValues);
+            setResources([...resources, formValues]);
             setLoading(false);
         } catch (e) {
             console.log(e);
         }
-
         setIsModalOpen(false);
     };
 
