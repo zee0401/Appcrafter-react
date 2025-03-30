@@ -1,6 +1,8 @@
+"use client";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { resourceSchema, ResourceFormValues } from "@/schema/resourceSchema";
+import { ResourceCategoryType, ResourceType } from "@/types/resourcesType";
 import {
     Dialog,
     DialogContent,
@@ -18,14 +20,13 @@ import {
     SelectItem,
     SelectValue,
 } from "@/components/ui/select";
-
-import { ResourceCategoryType } from "@/types/resourcesTypes";
+import { useEffect } from "react";
 
 interface ResourceFormModalProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
-    onSubmit: (data: ResourceFormValues) => void;
-    defaultValues?: ResourceFormValues;
+    onSubmit: (data: ResourceType) => void;
+    defaultValues?: ResourceType | null;
 }
 
 export default function ResourceFormModal({
@@ -38,18 +39,46 @@ export default function ResourceFormModal({
         register,
         handleSubmit,
         setValue,
-        formState: { errors },
+        reset,
+        watch,
+        formState: { errors, isSubmitting },
     } = useForm<ResourceFormValues>({
         resolver: zodResolver(resourceSchema),
-        defaultValues: defaultValues || {
+        defaultValues: {
             title: "",
             description: "",
             type: "Article",
         },
     });
 
+    useEffect(() => {
+        if (open) {
+            reset(
+                defaultValues || {
+                    title: "",
+                    description: "",
+                    type: "Article",
+                }
+            );
+        }
+    }, [open, defaultValues, reset]);
+
+    const handleFormSubmit = (data: ResourceType) => {
+        onSubmit(data);
+        reset();
+        onOpenChange(false);
+    };
+
     return (
-        <Dialog open={open} onOpenChange={onOpenChange}>
+        <Dialog
+            open={open}
+            onOpenChange={(isOpen) => {
+                if (!isOpen) {
+                    reset();
+                }
+                onOpenChange(isOpen);
+            }}
+        >
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>
@@ -57,54 +86,71 @@ export default function ResourceFormModal({
                     </DialogTitle>
                 </DialogHeader>
                 <form
-                    onSubmit={handleSubmit((data) => {
-                        onSubmit(data);
-                        onOpenChange(false);
-                    })}
+                    onSubmit={handleSubmit(handleFormSubmit)}
                     className="space-y-4"
                 >
-                    <Input placeholder="Title" {...register("title")} />
-                    {errors.title && (
-                        <p className="text-red-500 text-sm">
-                            {errors.title.message}
-                        </p>
-                    )}
+                    <div>
+                        <Input
+                            placeholder="Title"
+                            {...register("title")}
+                            disabled={isSubmitting}
+                        />
+                        {errors.title && (
+                            <p className="text-red-500 text-sm">
+                                {errors.title.message}
+                            </p>
+                        )}
+                    </div>
 
-                    <Textarea
-                        placeholder="Description"
-                        {...register("description")}
-                    />
-                    {errors.description && (
-                        <p className="text-red-500 text-sm">
-                            {errors.description.message}
-                        </p>
-                    )}
+                    <div>
+                        <Textarea
+                            placeholder="Description"
+                            {...register("description")}
+                            disabled={isSubmitting}
+                        />
+                        {errors.description && (
+                            <p className="text-red-500 text-sm">
+                                {errors.description.message}
+                            </p>
+                        )}
+                    </div>
 
-                    <Select
-                        value={defaultValues?.type || "Article"}
-                        onValueChange={(value) =>
-                            setValue("type", value as ResourceCategoryType)
-                        }
-                    >
-                        <SelectTrigger>
-                            <SelectValue placeholder="Select type" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="Article">Article</SelectItem>
-                            <SelectItem value="Video">Video</SelectItem>
-                            <SelectItem value="Tutorial">Tutorial</SelectItem>
-                        </SelectContent>
-                    </Select>
-
-                    {errors.type && (
-                        <p className="text-red-500 text-sm">
-                            {errors.type.message}
-                        </p>
-                    )}
+                    <div className="flex gap-2 items-center">
+                        <p>Select type:</p>
+                        <Select
+                            value={watch("type")}
+                            onValueChange={(value) =>
+                                setValue("type", value as ResourceCategoryType)
+                            }
+                            disabled={isSubmitting}
+                        >
+                            <SelectTrigger className="w-[180px]">
+                                <SelectValue placeholder="Select type" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="Article">Article</SelectItem>
+                                <SelectItem value="Video">Video</SelectItem>
+                                <SelectItem value="Tutorial">
+                                    Tutorial
+                                </SelectItem>
+                            </SelectContent>
+                        </Select>
+                        {errors.type && (
+                            <p className="text-red-500 text-sm">
+                                {errors.type.message}
+                            </p>
+                        )}
+                    </div>
 
                     <DialogFooter>
-                        <Button type="submit">
-                            {defaultValues ? "Update" : "Submit"}
+                        <Button type="submit" disabled={isSubmitting}>
+                            {isSubmitting
+                                ? defaultValues
+                                    ? "Updating..."
+                                    : "Creating..."
+                                : defaultValues
+                                ? "Update"
+                                : "Create"}
                         </Button>
                     </DialogFooter>
                 </form>

@@ -8,15 +8,37 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { Button } from "../ui/button";
-import { ResourceType } from "@/types/resourcesTypes";
+import { ResourceType } from "@/types/resourcesType";
+import ResourceFormModal from "../form-modal/ResourceForm";
+import { useState } from "react";
 
 interface ResourceTableProps {
     data: ResourceType[];
     onEdit: (resource: ResourceType) => void;
-    onDelete: (id: ResourceType["_id"]) => void;
+    onDelete: (id: string) => void;
 }
 
 const ResourceTable = ({ data, onEdit, onDelete }: ResourceTableProps) => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [editingResource, setEditingResource] = useState<ResourceType | null>(
+        null
+    );
+
+    const handleEditClick = (resource: ResourceType) => {
+        setEditingResource(resource);
+        setIsModalOpen(true);
+    };
+
+    const handleFormSubmit = (formValues: ResourceType) => {
+        if (editingResource) {
+            onEdit({
+                ...formValues,
+                _id: editingResource._id,
+            });
+        }
+        setIsModalOpen(false);
+    };
+
     return (
         <div className="p-5 w-full md:w-196 xl:w-196">
             <Table className="rounded-2xl border-2 border-zinc-800 shadow-md">
@@ -49,13 +71,16 @@ const ResourceTable = ({ data, onEdit, onDelete }: ResourceTableProps) => {
                                     <Button
                                         className="mr-2 hover:cursor-pointer"
                                         variant={"secondary"}
+                                        onClick={() =>
+                                            handleEditClick(resource)
+                                        }
                                     >
                                         Edit
                                     </Button>
                                     <Button
                                         className="hover:cursor-pointer"
                                         variant={"destructive"}
-                                        onClick={() => onDelete(resource._id)}
+                                        onClick={() => onDelete(resource?._id)}
                                     >
                                         Delete
                                     </Button>
@@ -64,6 +89,12 @@ const ResourceTable = ({ data, onEdit, onDelete }: ResourceTableProps) => {
                         ))}
                 </TableBody>
             </Table>
+            <ResourceFormModal
+                open={isModalOpen}
+                onOpenChange={setIsModalOpen}
+                onSubmit={handleFormSubmit}
+                defaultValues={editingResource}
+            />
         </div>
     );
 };

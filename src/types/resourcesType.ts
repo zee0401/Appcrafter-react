@@ -1,8 +1,11 @@
 export type ResourceCategoryType = "Article" | "Video" | "Tutorial";
 
-export interface ResourcesType {
-    _id?: string;
+export interface ResourceFormValues {
     title: string;
     description: string;
     type: ResourceCategoryType;
+}
+
+export interface ResourceType extends ResourceFormValues {
+    _id: string;
 }

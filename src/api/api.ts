@@ -1,15 +1,15 @@
 import api from "./axios";
-import { ResourceType } from "@/types/resourcesTypes";
+import { ResourceType } from "@/types/resourcesType";
 
 export const getAllResources = async (): Promise<ResourceType[]> => {
     const response = await api.get("/all-resources");
     return response.data.resources;
 };
 
-// export const getResourceById = async (id: string) => {
-//     const response = await api.get(`/resources/${id}`);
-//     return response.dataS;
-// };
+export const getResourceById = async (id: string) => {
+    const response = await api.get(`/resources/${id}`);
+    return response.data.resources;
+};
 
 export const createResource = async (
     resource: ResourceType

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "../ui/button";
 import ResourceFormModal from "../form-modal/ResourceForm";
-import { ResourceType } from "@/types/resourcesTypes";
+import { ResourceType } from "@/types/resourcesType";
 
 export function CardView() {
     const [isModalOpen, setIsModalOpen] = useState(false);

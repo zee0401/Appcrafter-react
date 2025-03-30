@@ -2,8 +2,8 @@ import ResourceFormModal from "@/components/form-modal/ResourceForm";
 import ResourceTable from "@/components/table-view/ResourceTable";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import { ResourceFormValues } from "@/schema/resourceSchema";
-import { ResourceType } from "@/types/resourcesTypes";
+
+import { ResourceType } from "@/types/resourcesType";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { CardView } from "@/components/card-view/CardView";
@@ -34,18 +34,12 @@ const Home = () => {
         setIsModalOpen(false);
     };
 
-    const handleEditResource = async (id: string, formValues: ResourceType) => {
+    const handleEditResource = async (updatedResource: ResourceType) => {
         try {
-            setLoading(true);
-            await updateResource(id, formValues);
-            setResources(
-                resources.map((resource) =>
-                    resource._id === id ? formValues : resource
-                )
-            );
-            setLoading(false);
-        } catch (e) {
-            console.log(e);
+            await updateResource(updatedResource._id, updatedResource);
+            fetchResources();
+        } catch (error) {
+            console.error("Error updating resource:", error);
         }
     };
 
@@ -101,7 +95,7 @@ const Home = () => {
                 ) : (
                     <ResourceTable
                         data={resources}
-                        // onEdit={handleEditResource}
+                        onEdit={handleEditResource}
                         onDelete={handleDeleteResource}
                     />
                 )
